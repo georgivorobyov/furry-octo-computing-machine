@@ -1,4 +1,4 @@
-﻿
+﻿using Sumc.Data.Migrations;
 using Sumc.Models;
 using System.Data.Entity;
 
@@ -8,8 +8,8 @@ namespace Sumc.Data
     {
         static SumcContext()
         {
-            //var migrations = new MigrateDatabaseToLatestVersion<SumcContext, Configuration>();
-            //Database.SetInitializer(migrations);
+            var migrations = new MigrateDatabaseToLatestVersion<SumcContext, Configuration>();
+            Database.SetInitializer(migrations);
         }
 
         public SumcContext()

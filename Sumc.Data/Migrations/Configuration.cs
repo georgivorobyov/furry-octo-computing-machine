@@ -5,7 +5,7 @@ namespace Sumc.Data.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Sumc.Data.SumcContext>
+    public sealed class Configuration : DbMigrationsConfiguration<Sumc.Data.SumcContext>
     {
         public Configuration()
         {
@@ -14,6 +14,10 @@ namespace Sumc.Data.Migrations
 
         protected override void Seed(Sumc.Data.SumcContext context)
         {
+            if (context.Sessions.Count() == 0)
+            {
+                context.Sessions.Add(new Models.Session { IsActive = false });
+            }
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 

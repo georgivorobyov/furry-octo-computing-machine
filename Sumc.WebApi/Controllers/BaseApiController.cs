@@ -145,13 +145,5 @@ namespace Sumc.WebApi.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Possible Pars Error");
             }
         }
-
-        ~BaseApiController()
-        {
-            if (this.sessionRepository != null)
-            {
-                this.sessionRepository.Dispose();
-            }
-        }
     }
 }

@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Sumc.Data;
 
 namespace Sumc.Repositories
 {
-    public class SessionRepository : BaseRequesterRepository<Session>
+    public class SessionRepository : BaseRequestRepository
     {
         private Session cachedSession;
 
@@ -17,7 +18,10 @@ namespace Sumc.Repositories
         {
             if (this.cachedSession == null)
             {
-                this.cachedSession = this.dbSet.FirstOrDefault();
+                using (var context = new SumcContext())
+                {
+                    this.cachedSession = context.Sessions.FirstOrDefault();
+                }
             }
 
             return this.cachedSession;
@@ -25,35 +29,49 @@ namespace Sumc.Repositories
 
         public void SetFormTokenAndSession(string token, Cookie cookie)
         {
-            var session = this.GetSession();
-            session.FormToken = token;
-            session.SessionToken = this.CookieToString(cookie);
-            this.SaveChanges();
+            using (var context = new SumcContext())
+            {
+                var session = context.Sessions.FirstOrDefault();
+                session.FormToken = token;
+                session.SessionToken = this.CookieToString(cookie);
+                context.SaveChanges();
+            }
         }
 
         public void SetAuthCookie(Cookie cookie, Cookie sessionCookie)
         {
-            var session = this.GetSession();
-            session.SessionToken = this.CookieToString(sessionCookie);
-            if (cookie != null)
+            using (var context = new SumcContext())
             {
-                session.GlobalAuthToken = this.CookieToString(cookie);
-                session.IsActive = true;
+                var session = context.Sessions.FirstOrDefault();
+                session.SessionToken = this.CookieToString(sessionCookie);
+                if (cookie != null)
+                {
+                    session.GlobalAuthToken = this.CookieToString(cookie);
+                    session.IsActive = true;
+                }
+
+                context.SaveChanges();
             }
-            this.SaveChanges();
         }
 
         public void DeactivateAuthCookie()
         {
-            var session = this.GetSession();
-            session.IsActive = false;
-            this.SaveChanges();
+            using (var context = new SumcContext())
+            {
+                var session = context.Sessions.FirstOrDefault();
+                session.IsActive = false;
+
+                context.SaveChanges();
+            }
         }
 
         public bool IsActiveAuthCookie()
         {
-            var session = this.GetSession();
-            return session.IsActive;
+            using (var context = new SumcContext())
+            {
+                var session = context.Sessions.FirstOrDefault();
+                return session.IsActive;
+            }
         }
 
         public HttpWebResponse GetVirtualTableResponse()
@@ -63,7 +81,12 @@ namespace Sumc.Repositories
 
         public HttpWebResponse PostCaptchaCode(string code)
         {
-            var session = this.GetSession();
+            Session session = null;
+            using (var context = new SumcContext())
+            {
+                session = context.Sessions.FirstOrDefault();
+            }
+
             string data = string.Format("q=%D0%B1%D1%8A%D0%BA%D1%81%D1%82%D0%BE%D0%BD&o=1&go=1&poleicngi={0}&sc={1}", session.FormToken, code);
             var cookie = JsonConvert.DeserializeObject<Cookie>(session.SessionToken);
             var response = HttpRequester.Post(BaseSofiaTrafficUrl + "vt", data, cookie);
@@ -77,14 +100,22 @@ namespace Sumc.Repositories
 
         public void SetSession(Cookie cookie)
         {
-            var session = this.GetSession();
-            session.SessionToken = JsonConvert.SerializeObject(cookie);
-            this.SaveChanges();
+            using (var context = new SumcContext())
+            {
+                var session = context.Sessions.FirstOrDefault();
+                session.SessionToken = JsonConvert.SerializeObject(cookie);
+                context.SaveChanges();
+            }
         }
 
         public HttpWebResponse PostCaptchaCode(string token, string code)
         {
-            var session = this.GetSession();
+            Session session = null;
+            using (var context = new SumcContext())
+            {
+                session = context.Sessions.FirstOrDefault();
+            }
+
             string data = string.Format("q=%D0%B1%D1%8A%D0%BA%D1%81%D1%82%D0%BE%D0%BD&o=1&go=1&poleicngi={0}&sc={1}", token, code);
             var cookie = JsonConvert.DeserializeObject<Cookie>(session.SessionToken);
             var response = HttpRequester.Post(BaseSofiaTrafficUrl + "vt", data, cookie);

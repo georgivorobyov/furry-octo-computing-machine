@@ -15,7 +15,7 @@ namespace Sumc.WebApi.Controllers
             return new MainStop[]
             {
                 new MainStop { Name = "ПЛ.ОРЛОВ МОСТ", TransportNumbers = new string[] { "4", "5","8","11","76", "84","204","213","280","306","604" } },
-                new MainStop { Name = "БУЛ. ГОЦЕ ДЕЛЧЕВ", TransportNumbers = new string[] { "9", "2", "204" }},
+                new MainStop { Name = "БУЛ.ГОЦЕ ДЕЛЧЕВ", TransportNumbers = new string[] { "9", "2", "204" }},
                 new MainStop { Name = "ГАРА ПОДУЯНЕ", TransportNumbers = new string[] { "11", "72", "75", "404" } },
                 new MainStop { Name = "НДК", TransportNumbers = new string[] { "1", "7" } },
                 new MainStop { Name = "Ж.К. КРАСНО СЕЛО", TransportNumbers = new string[] { "5", "4", "64", "260", "83", "102"} },

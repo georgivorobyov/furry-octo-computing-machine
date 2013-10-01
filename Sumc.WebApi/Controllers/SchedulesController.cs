@@ -233,17 +233,21 @@ namespace Sumc.WebApi.Controllers
                 var document = this.GetDocumentReader(text);
                 var schedule = new Schedule();
 
-                var error = document.DocumentNode.SelectSingleNode("//*[@class='error']");
-                if (!string.IsNullOrWhiteSpace(error.InnerText))
+                var errors = document.DocumentNode.SelectNodes("//*[@class='error']");
+                if (errors != null)
                 {
-                    schedule.Error = error.InnerText;
-                    schedule.IsFound = false;
-                    return schedule;
+                    foreach (var error in errors)
+                    {
+                        if (!string.IsNullOrWhiteSpace(error.InnerText))
+                        {
+                            schedule.Error = error.InnerText;
+                            schedule.IsFound = false;
+                            return schedule;
+                        }
+                    }
                 }
-                else
-                {
-                    schedule.IsFound = true;
-                }
+
+                schedule.IsFound = true;
 
                 var vehicleInfo = document.DocumentNode.SelectSingleNode("//*[@class='page_title'][2]/b").InnerText.Split(' ');
                 var pageContent = document.DocumentNode.SelectSingleNode("//*[@class='page_cnt']");

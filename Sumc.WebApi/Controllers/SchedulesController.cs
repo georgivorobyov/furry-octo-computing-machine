@@ -58,8 +58,8 @@ namespace Sumc.WebApi.Controllers
         {
             foreach (var direction in directions)
             {
-                var form = direction.ParentNode;
-                var optionElements = form.SelectNodes("self::node()//option");
+                var table = direction.NextSibling.NextSibling;
+                var optionElements = table.SelectNodes("self::node()//option");
                 var options = this.ToOptions(optionElements);
                 var scheduleDirection = new ScheduleDirection();
                 scheduleDirection.Direction = direction.InnerText;

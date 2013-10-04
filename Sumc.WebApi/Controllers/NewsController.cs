@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace Sumc.WebApi.Controllers
@@ -33,8 +34,8 @@ namespace Sumc.WebApi.Controllers
                 {
                     var glanceNews = new NewsGlanceInformation();
                     glanceNews.Id = newsLinks[i].Attributes.First(a => a.Name == "href").Value.Substring(9);
-                    glanceNews.Title = newsLinks[i].InnerHtml.Trim('\t', '\n');
-                    glanceNews.Date =newsDates[i].InnerHtml.Trim('\t', '\n');
+                    glanceNews.Title = HttpUtility.HtmlDecode((newsLinks[i].InnerHtml.Trim('\t', '\n', ' ')));
+                    glanceNews.Date = newsDates[i].InnerHtml.Trim('\t', '\n', ' ');
                     news.Add(glanceNews);
                 }
 
@@ -51,9 +52,9 @@ namespace Sumc.WebApi.Controllers
                 var document = this.GetDocumentReader(text);
 
                 var news = new News();
-                news.Title = document.DocumentNode.SelectSingleNode("//*[@class='page_title']").InnerText.Trim('\n', '\t');
-                news.Content = document.DocumentNode.SelectSingleNode("//*[@class='page_cnt']").InnerText;
-                news.Date = document.DocumentNode.SelectSingleNode("//*[@class='date']").InnerText.Trim('\n', '\t');
+                news.Title = HttpUtility.HtmlDecode(document.DocumentNode.SelectSingleNode("//*[@class='page_title']").InnerText.Trim('\n', '\t', ' '));
+                news.Content = HttpUtility.HtmlDecode(document.DocumentNode.SelectSingleNode("//*[@class='page_cnt']").InnerText);
+                news.Date = document.DocumentNode.SelectSingleNode("//*[@class='date']").InnerText.Trim('\n', '\t', ' ');
                 return news;
             });
         }

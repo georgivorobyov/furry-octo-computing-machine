@@ -53,7 +53,7 @@ namespace Sumc.WebApi.Controllers
 
                 var news = new News();
                 news.Title = HttpUtility.HtmlDecode(document.DocumentNode.SelectSingleNode("//*[@class='page_title']").InnerText.Trim('\n', '\t', ' '));
-                news.Content = HttpUtility.HtmlDecode(document.DocumentNode.SelectSingleNode("//*[@class='page_cnt']").InnerText);
+                news.Content = HttpUtility.HtmlDecode(document.DocumentNode.SelectSingleNode("//*[@class='page_cnt']").InnerText).Replace("&nbsp;", " ");
                 news.Date = document.DocumentNode.SelectSingleNode("//*[@class='date']").InnerText.Trim('\n', '\t', ' ');
                 return news;
             });

@@ -65,6 +65,15 @@ namespace Sumc.WebApi.Controllers
                           <text id=""1"">Text Field 1</text>
                           <text id=""2"">Text Field 2</text>
                         </binding>
+                        <binding template=""TileWideText03"">
+                            <text id=""1"">Text Field 1</text>
+                        </binding>
+                        <binding template=""TileWideText03"">
+                            <text id=""1"">Text Field 2</text>
+                        </binding>
+                        <binding template=""TileWideText03"">
+                            <text id=""1"">Text Field 3</text>
+                        </binding>
                          <binding template=""TileSquareBlock"">
                             <text id=""1"">{4}</text>
                             <text id=""2"">{6}</text>

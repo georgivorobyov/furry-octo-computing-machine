@@ -55,7 +55,7 @@ namespace Sumc.WebApi.Controllers
 
         public HttpResponseMessage Get()
         {
-            var newsController = new NewsController();
+            //var newsController = new NewsController();
            // var news = newsController.GetNews();
                         
             var tileXml = @"<?xml version=""1.0"" encoding=""utf-8"" ?><tile>
@@ -73,7 +73,7 @@ namespace Sumc.WebApi.Controllers
                      </tile>";
 
             //var firstNews = news
-            var tile = string.Format(tileXml);
+            var tile = tileXml;
 
             return new HttpResponseMessage() { Content = new StringContent(tile, Encoding.UTF8, "application/xml") };
         }

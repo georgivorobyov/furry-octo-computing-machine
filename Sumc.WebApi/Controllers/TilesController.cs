@@ -61,7 +61,7 @@ namespace Sumc.WebApi.Controllers
             var tileXml = @"<?xml version=""1.0"" encoding=""utf-8"" ?><tile>
                        <visual>
                          <binding template=""TileWideImageAndText02"">
-                          <image id=""1"" src=""image1.png"" alt=""Моят транспорт""/>
+                          <image id=""1"" src=""ms-appx:///Assets/WideLogo.scale-100.png"" alt=""Моят транспорт""/>
                           <text id=""1"">Text Field 1</text>
                           <text id=""2"">Text Field 2</text>
                         </binding>

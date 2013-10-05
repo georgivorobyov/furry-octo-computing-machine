@@ -14,6 +14,8 @@ namespace Sumc.Models.Response
 
         public string Information { get; set; }
 
+        public string Direction { get; set; }
+
         public IEnumerable<string> RightTimes { get; set; }
 
         public IEnumerable<VehicleVirtualTable> Buses { get; set; }

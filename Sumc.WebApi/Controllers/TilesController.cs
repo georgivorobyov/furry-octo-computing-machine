@@ -26,10 +26,9 @@ namespace Sumc.WebApi.Controllers
 <visual>
     <binding template=""TileWideText01"">
         <text id=""1"">{5} {4}</text>
-        <text id=""2"">{0}</text>
-        <text id=""3""></text>
+        <text id=""2"">{6}</text>
+        <text id=""3"">{0}</text>
         <text id=""4"">{1}, {2}, {3}</text>
-        <text id=""5""></text>
     </binding>
     <binding template=""TileSquareText01"">
         <text id=""1"">{4} {5}</text>
@@ -47,7 +46,8 @@ namespace Sumc.WebApi.Controllers
                 scheduleVirtualTable.RightTimes.Skip(1).FirstOrDefault(),
                 scheduleVirtualTable.RightTimes.Skip(2).FirstOrDefault(),
                 scheduleVirtualTable.Title,
-                scheduleVirtualTable.VehicleType);
+                scheduleVirtualTable.VehicleType,
+                scheduleVirtualTable.Direction);
 
             return new HttpResponseMessage() { Content = new StringContent(tile, Encoding.UTF8, "application/xml") };
         }
@@ -59,9 +59,11 @@ namespace Sumc.WebApi.Controllers
                         
             var tileXml = @"<?xml version=""1.0"" encoding=""utf-8"" ?><tile>
                        <visual>
-                        <binding template=""TileWidePeekImage03"">
-                          <image id=""1"" src=""ms-appx:///Assets/WideLogo.scale-100.png"" alt=""Моят транспорт""/>
-                          <text id=""1"">{0}</text>
+                        <binding template=""TileWideText04"">
+                           <text id=""1"">{0}</text>
+                        </binding>
+                        <binding template=""TileSquareText04"">
+                            <text id=""1"">{0}</text>
                         </binding>
                        </visual>
                      </tile>";

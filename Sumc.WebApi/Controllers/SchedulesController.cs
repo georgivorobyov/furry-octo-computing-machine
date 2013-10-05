@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace Sumc.WebApi.Controllers
@@ -97,7 +98,7 @@ namespace Sumc.WebApi.Controllers
         {
             urlParameters = CleanParameters(urlParameters);
             urlParameters = urlParameters.Replace("stop=", "s=");
-            var response = this.scheduleRepository.GetVirtualTableByUrlParameters(urlParameters, this.SessionKey, this.GlobalAuthKey);
+            var response = this.scheduleRepository.GetVirtualTableByUrlParameters(urlParameters, null,null);
 
             //No Cookies
 
@@ -117,6 +118,7 @@ namespace Sumc.WebApi.Controllers
             var pageContent = document.DocumentNode.SelectSingleNode("//*[@class='page_box']");
             var pageDetails = document.DocumentNode.SelectSingleNode("//*[@class='txt_box']");
 
+            schedule.Direction = HttpUtility.HtmlDecode(pageDetails.ChildNodes[6].InnerText).Trim('\t', '\n', ' ');
             schedule.RightTimes = pageContent.ChildNodes[13].InnerText.Split(',');
             schedule.Information = pageContent.SelectSingleNode("//*[@class='info']").InnerText;
             schedule.Title = vehicleInfo[1];

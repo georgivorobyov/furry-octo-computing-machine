@@ -47,7 +47,7 @@ namespace Sumc.WebApi.Controllers
                 scheduleVirtualTable.RightTimes.Skip(2).FirstOrDefault(),
                 scheduleVirtualTable.Title,
                 scheduleVirtualTable.VehicleType,
-                scheduleVirtualTable.Direction);
+                scheduleVirtualTable.Route);
 
             return new HttpResponseMessage() { Content = new StringContent(tile, Encoding.UTF8, "application/xml") };
         }

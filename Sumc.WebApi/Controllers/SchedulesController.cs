@@ -118,12 +118,11 @@ namespace Sumc.WebApi.Controllers
             var pageContent = document.DocumentNode.SelectSingleNode("//*[@class='page_box']");
             var pageDetails = document.DocumentNode.SelectSingleNode("//*[@class='txt_box']");
 
-            schedule.Direction = HttpUtility.HtmlDecode(pageDetails.ChildNodes[6].InnerText).Trim('\t', '\n', ' ', '"');
             schedule.RightTimes = pageContent.ChildNodes[13].InnerText.Split(',');
             schedule.Information = pageContent.SelectSingleNode("//*[@class='info']").InnerText;
             schedule.Title = vehicleInfo[1];
             schedule.VehicleType = vehicleInfo[0];
-            schedule.Route = pageDetails.ChildNodes[6].InnerText.Trim('\n', '\t');
+            schedule.Route = HttpUtility.HtmlDecode(pageDetails.ChildNodes[6].InnerText).Trim('\t', '\n', ' ', '"');
             schedule.Stop = this.GetStop(pageDetails.ChildNodes[2]);
             this.Vehicles(pageContent, schedule);
             return schedule;

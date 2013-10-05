@@ -119,8 +119,8 @@ namespace Sumc.WebApi.Controllers
             var pageDetails = document.DocumentNode.SelectSingleNode("//*[@class='txt_box']");
 
             schedule.RightTimes = pageContent.ChildNodes[13].InnerText.Split(',');
-            schedule.Information = pageContent.SelectSingleNode("//*[@class='info']").InnerText;
-            schedule.Title = vehicleInfo[1];
+            schedule.Information = HttpUtility.HtmlDecode(pageContent.SelectSingleNode("//*[@class='info']").InnerText).Trim('\t', '\n', ' ');
+            schedule.Title = vehicleInfo[1].Trim('\t', '\n', ' ');
             schedule.VehicleType = vehicleInfo[0];
             schedule.Route = HttpUtility.HtmlDecode(pageDetails.ChildNodes[6].InnerText).Trim('\t', '\n', ' ', '"');
             schedule.Stop = this.GetStop(pageDetails.ChildNodes[2]);

@@ -43,6 +43,25 @@ namespace Sumc.WebApi.Controllers
             });
         }
 
+        [NonAction]
+        public IEnumerable<NewsGlanceInformation> GetNewsList()
+        {
+            var response = this.newsRepository.GetNews(this.SessionKey, this.GlobalAuthKey);
+            var text = this.GetTextFromResponse(response);
+            var document = this.GetDocumentReader(text);
+
+            var newsLinks = document.DocumentNode.SelectNodes("//*[@class='page_box']/a");
+            var newsDates = document.DocumentNode.SelectNodes("//*[@class='page_box']/span[@class='date']");
+            for (int i = 0; i < newsLinks.Count; i++)
+            {
+                var glanceNews = new NewsGlanceInformation();
+                glanceNews.Id = newsLinks[i].Attributes.First(a => a.Name == "href").Value.Substring(9);
+                glanceNews.Title = HttpUtility.HtmlDecode((newsLinks[i].InnerHtml.Trim('\t', '\n', ' ')));
+                glanceNews.Date = newsDates[i].InnerHtml.Trim('\t', '\n', ' ');
+                yield return glanceNews;
+            }
+        }
+
         public HttpResponseMessage GetNews(string id)
         {
             return this.PerformOperation<News>(() =>

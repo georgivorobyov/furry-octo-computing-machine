@@ -23,66 +23,50 @@ namespace Sumc.WebApi.Controllers
         {
 
             var tileXml = @"<?xml version=""1.0"" encoding=""utf-8"" ?><tile>
-                       <visual>
-                         <binding template=""TileWideBlockAndText01"">
-                           <text id=""1"">{0}</text>
-                           <text id=""2"">{1}</text>
-                           <text id=""3"">{2}</text>
-                           <text id=""4"">{3}</text>
-                           <text id=""5"">{4}</text>
-                           <text id=""6"">{5}</text>
-                         </binding>   
-                         <binding template=""TileSquareBlock"">
-                            <text id=""1"">{4}</text>
-                            <text id=""2"">{6}</text>
-                         </binding> 
-                       </visual>
-                     </tile>";
+<visual>
+    <binding template=""TileWideText01"">
+        <text id=""1"">{4} {5}</text>
+        <text id=""2"">{0}</text>
+        <text id=""3"">{1}</text>
+        <text id=""4"">{2}</text>
+        <text id=""5"">{3}</text>
+    </binding>
+    <binding template=""TileSquareText01"">
+        <text id=""1"">{4} {5}</text>
+        <text id=""2"">{1}</text>
+        <text id=""3"">{2}</text>
+        <text id=""4"">{3}</text>
+    </binding>
+</visual>
+</tile>";
 
             var stop = string.Format("{0} ({1})", scheduleVirtualTable.Stop.Name, scheduleVirtualTable.Stop.Number);
-            var times = string.Join(", ", scheduleVirtualTable.RightTimes);
             var tile = string.Format(tileXml,
                 stop,
                 scheduleVirtualTable.RightTimes.FirstOrDefault(),
                 scheduleVirtualTable.RightTimes.Skip(1).FirstOrDefault(),
                 scheduleVirtualTable.RightTimes.Skip(2).FirstOrDefault(),
                 scheduleVirtualTable.Title,
-                scheduleVirtualTable.VehicleType,
-                times);
+                scheduleVirtualTable.VehicleType);
 
             return new HttpResponseMessage() { Content = new StringContent(tile, Encoding.UTF8, "application/xml") };
         }
 
-        public HttpResponseMessage Get()
+        public HttpResponseMessage GetNews(int number)
         {
-            //var newsController = new NewsController();
-           // var news = newsController.GetNews();
+            var newsController = new NewsController();
+            var news = newsController.GetNewsList().Skip(number).FirstOrDefault();
                         
             var tileXml = @"<?xml version=""1.0"" encoding=""utf-8"" ?><tile>
                        <visual>
-                         <binding template=""TileWideImageAndText02"">
+                        <binding template=""TileWidePeekImage03"">
                           <image id=""1"" src=""ms-appx:///Assets/WideLogo.scale-100.png"" alt=""Моят транспорт""/>
-                          <text id=""1"">Text Field 1</text>
-                          <text id=""2"">Text Field 2</text>
+                          <text id=""1"">{0}</text>
                         </binding>
-                        <binding template=""TileWideText03"">
-                            <text id=""1"">Text Field 1</text>
-                        </binding>
-                        <binding template=""TileWideText03"">
-                            <text id=""1"">Text Field 2</text>
-                        </binding>
-                        <binding template=""TileWideText03"">
-                            <text id=""1"">Text Field 3</text>
-                        </binding>
-                         <binding template=""TileSquareBlock"">
-                            <text id=""1"">{4}</text>
-                            <text id=""2"">{6}</text>
-                         </binding> 
                        </visual>
                      </tile>";
 
-            //var firstNews = news
-            var tile = tileXml;
+            var tile = string.Format(tileXml, news);
 
             return new HttpResponseMessage() { Content = new StringContent(tile, Encoding.UTF8, "application/xml") };
         }
